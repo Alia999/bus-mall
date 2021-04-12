@@ -1,0 +1,14 @@
+h1{
+    font-size: xx-large;
+    color: rgb(107, 20, 165);
+    margin-top: 33px;
+    margin-left: 100px;
+    font-weight: bold;
+}
+
+#photos{text-align: center;
+    display:inline;
+
+}
+body{background-color: azure;
+}
