@@ -7,7 +7,7 @@ let centerphoto = document.getElementById('centerphoto');
 let frightphoto = document.getElementById('rightphoto');
 
 
-let maxAttempts = 5;
+let maxAttempts =25;
 
 let attemptCounter = 0;
 
@@ -16,13 +16,17 @@ let leftphotoIndex;
 let centerphotoIndex;
 let rightphotoIndex;
 
+let namesArray=[];
+let votesArray=[];
+let shownArray=[];
+
 function Products(name, source) {
     this.name = name;
     this.source = source;
     this.shown = 0;
     this.votes = 0;
     Products.allProducts.push(this);
-
+    namesArray.push(this.name);
 }
 Products.allProducts = [];
 
@@ -73,9 +77,18 @@ function renderThreephotos() {
         centerphotoIndex = generateRandomIndex();
 
         rightphotoIndex = generateRandomIndex();
+      
 
 
     }
+   /* let photosArray=[leftphotoIndex,centerphotoIndex,rightphotoIndex]
+    while(leftphotoIndex==photosArray[i] || centerphotoIndex==photosArray[i] ||rightphotoIndex==photosArray[i]){
+        leftphotoIndex = generateRandomIndex();
+    centerphotoIndex = generateRandomIndex();
+    rightphotoIndex = generateRandomIndex();
+    } 
+    */
+    
 
     leftphoto.src = Products.allProducts[leftphotoIndex].source;
     Products.allProducts[leftphotoIndex].shown++;
@@ -83,8 +96,12 @@ function renderThreephotos() {
     Products.allProducts[centerphotoIndex].shown++;
     rightphoto.src = Products.allProducts[rightphotoIndex].source;
     Products.allProducts[rightphotoIndex].shown++;
+
+   
 }
 renderThreephotos();
+
+
 
 photosElement.addEventListener('click',userClick);
 
@@ -110,6 +127,16 @@ function userClick(e) {
 
        let  button=document.getElementById('button');
         button.addEventListener('click',Button);
+
+        for (let i = 0; i < Products.allProducts.length; i++) {
+            votesArray.push(Products.allProducts[i].votes);
+            shownArray.push(Products.allProducts[i].shown);
+            
+          }
+          
+      
+          
+          chart();
 
       function Button(click){
           let list=document.getElementById('list');
@@ -137,8 +164,42 @@ function userClick(e) {
 }
 
 
-
-
-
-
-
+function chart() {
+    let ctx = document.getElementById('myChart').getContext('2d');
+    
+    let chart= new Chart(ctx,{
+      
+     type: 'bar',
+  
+   
+     data:{
+     
+        labels: namesArray,
+        
+        datasets: [
+          {
+          label: 'product votes',
+          data: votesArray,
+          backgroundColor: [
+            'rgb(251, 93, 76)',
+          ],
+    
+          borderWidth: 1
+        },
+  
+        {
+          label: 'products shown',
+          data: shownArray,
+          backgroundColor: [
+            'black',
+          ],
+    
+          borderWidth: 1
+        }
+        
+      ]
+      },
+      options: {}
+    });
+    
+  }
