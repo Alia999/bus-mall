@@ -2,13 +2,27 @@ h1{
     font-size: xx-large;
     color: rgb(107, 20, 165);
     margin-top: 33px;
-    margin-left: 100px;
+    margin-left: 500px;
     font-weight: bold;
 }
 
-#photos{text-align: center;
-    display:inline;
+.photos{
+    display:flex;
+   
+margin-left: 250px;
+   
+  
+    
 
 }
 body{background-color: azure;
+}
+#leftphoto{width: 25%;}
+#centerphoto{width: 25%;}
+#rightphoto{width: 25%;}
+
+
+h2{margin-left: 300px;}
+p{
+    margin-left: 300px;
 }

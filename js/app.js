@@ -2,71 +2,73 @@
 
 
 let photosElement = document.getElementById('photos');
-let leftphoto=document.getElementById('leftphoto');
-let centerphoto=document.getElementById('centerphoto');
-let frightphoto=document.getElementById('rightphoto');
+let leftphoto = document.getElementById('leftphoto');
+let centerphoto = document.getElementById('centerphoto');
+let frightphoto = document.getElementById('rightphoto');
+
 
 let maxAttempts = 5;
 
 let attemptCounter = 0;
 
-let photosindex;
- let leftphotoIndex;
- let centerphotoIndex;
- let rightphotoIndex;
 
-function products(name,source) {
+let leftphotoIndex;
+let centerphotoIndex;
+let rightphotoIndex;
+
+function Products(name, source) {
     this.name = name;
-    this.source =source;
+    this.source = source;
     this.shown = 0;
     this.votes = 0;
-    products.allProducts.push(this)
+    Products.allProducts.push(this);
 
 }
-products.allProducts = [];
+Products.allProducts = [];
 
-new products('bag', 'img/bag.jpg')
-new products('banana', 'img/banana.jpg')
-new products('bathroom', 'img/bathroom.jpg')
-new products('boots', 'img/boots.jpg')
-
-
-new products('breakfast', 'img/breakfast.jpg')
-new products('bubblegum', 'img/bubblegum.jpg')
-new products('chair', 'img/chair.jpg')
-new products('cthulhu', 'img/cthulhu.jpg')
-
-new products('dog', 'img/dog-duck.jpg')
-new products('dragon', 'img/dragon.jpg')
-new products('pen', 'img/pen.jpg')
-new products('pet-sweep', 'img/pet-sweep.jpg')
+new Products('bag', './img/bag.jpg');
+new Products('banana', './img/banana.jpg');
+new Products('bathroom', './img/bathroom.jpg');
+new Products('boots', './img/boots.jpg');
 
 
-new products('scissors', 'img/scissors.jpg')
-new products('shark', 'img/shark.jpg')
-new products('sweep', 'img/sweep.png')
-new products('tauntaun', 'img/tauntaun.jpg')
+new Products('breakfast', './img/breakfast.jpg');
+new Products('bubblegum', './img/bubblegum.jpg');
+new Products('chair', './img/chair.jpg');
+new Products('cthulhu', './img/cthulhu.jpg');
 
-new products('unicorn', 'img/unicorn.jpg')
-new products('usb', 'img/usb.gif')
-new products('water-can', 'img/water-can.jpg')
-new products('wine-glass', 'img/wine-glass.jpg')
+new Products('dog', './img/dog-duck.jpg');
+new Products('dragon', './img/dragon.jpg');
+new Products('pen', './img/pen.jpg');
+new Products('pet-sweep', './img/pet-sweep.jpg');
 
-console.log(products.allProducts);
+
+new Products('scissors', './img/scissors.jpg');
+new Products('shark', './img/shark.jpg');
+new Products('sweep', './img/sweep.png');
+new Products('tauntaun', './img/tauntaun.jpg');
+
+new Products('unicorn', './img/unicorn.jpg');
+new Products('usb', './img/usb.gif');
+new Products('water-can', './img/water-can.jpg');
+new Products('wine-glass', './img/wine-glass.jpg');
+
+console.log(Products.allProducts);
+
 
 function generateRandomIndex() {
 
-    return Math.floor(Math.random() * products.allProducts.length);
+    return Math.floor(Math.random() * Products.allProducts.length);
 }
 //console.log(generateRandomIndex())
 function renderThreephotos() {
-    leftphotoIndex= generateRandomIndex();
+    leftphotoIndex = generateRandomIndex();
     centerphotoIndex = generateRandomIndex();
     rightphotoIndex = generateRandomIndex();
 
 
     while (leftphotoIndex === centerphotoIndex || centerphotoIndex === rightphotoIndex || rightphotoIndex === leftphotoIndex) {
-        leftphotoIndex = generateRandomIndex();
+        /*  leftphotoIndex = generateRandomIndex();*/
 
         centerphotoIndex = generateRandomIndex();
 
@@ -74,50 +76,69 @@ function renderThreephotos() {
 
 
     }
+
+    leftphoto.src = Products.allProducts[leftphotoIndex].source;
+    Products.allProducts[leftphotoIndex].shown++;
+    centerphoto.src = Products.allProducts[centerphotoIndex].source;
+    Products.allProducts[centerphotoIndex].shown++;
+    rightphoto.src = Products.allProducts[rightphotoIndex].source;
+    Products.allProducts[rightphotoIndex].shown++;
 }
 renderThreephotos();
 
-photosElement.src = products.allProducts[leftphotoIndex].source;
-photosElement.src = products.allProducts[centerphotoIndex].source;
-photosElement.src = products.allProducts[rightphotoIndex].source;
+photosElement.addEventListener('click',userClick);
 
 function userClick(e) {
     attemptCounter++;
     if (attemptCounter <= maxAttempts) {
-        if (e.target.id === '1') {
-            products.allProducts[leftphotoIndex].votes++;
-        } else if (e.target.id === '2') {
+        if (e.target.id === 'leftphoto') {
+            Products.allProducts[leftphotoIndex].votes++;
+        } else if (e.target.id === 'centerphoto') {
 
-            products.allProducts[centerphotoIndex].votes++;
+            Products.allProducts[centerphotoIndex].votes++;
         }
+        else if (e.target.id === 'rightphoto') { Products.allProducts[rightphotoIndex].votes++; }
 
-
-        else { products.allProducts[rightphotoIndex].votes++; }
+        else { attemptCounter--; }
 
         renderThreephotos();
-        
+
     }
- 
-        else {
-            let results=getElementById('results')
-            list=document.createElement("list")
 
-            let list=document.createElement
+    else {
+        photosElement.removeEventListener('click',userClick);
 
-            let productsresult;
-        
-            for (let i = 0; i < products.allProducts.length; i++) {
-              productsresult=document.createElement('li');
-              list.appendChild(productsresult);
-        
-              productsresult.textContent=`${products.allProducts[i].name} has ${products.allProducts[i].votes} votes`
-              
-            }
-          photosElement.removeEventListener('click',userClick);
+       let  button=document.getElementById('button');
+        button.addEventListener('click',Button);
+
+      function Button(click){
+          let list=document.getElementById('list');
+          let productsresult;
           
+        for (let i = 0; i < Products.allProducts.length; i++) {
+            let  productsresult = document.createElement('li');
+              list.appendChild(productsresult);
+  
+              productsresult.textContent = `${Products.allProducts[i].name} has ${Products.allProducts[i].votes} votes and was shown ${Products.allProducts[i].shown} times`;
+              button.removeEventListener('click', Button);
           }
+         
+  
+
+      }
+
+
         
 
+    }
 
-        }
-       
+    
+
+}
+
+
+
+
+
+
+
