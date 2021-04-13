@@ -58,7 +58,7 @@ new Products('water-can', './img/water-can.jpg');
 new Products('wine-glass', './img/wine-glass.jpg');
 
 console.log(Products.allProducts);
-
+let shownPhotosArray=[];
 
 function generateRandomIndex() {
 
@@ -70,7 +70,7 @@ function renderThreephotos() {
     centerphotoIndex = generateRandomIndex();
     rightphotoIndex = generateRandomIndex();
 
-
+    
     while (leftphotoIndex === centerphotoIndex || centerphotoIndex === rightphotoIndex || rightphotoIndex === leftphotoIndex) {
         /*  leftphotoIndex = generateRandomIndex();*/
 
@@ -81,13 +81,15 @@ function renderThreephotos() {
 
 
     }
-   /* let photosArray=[leftphotoIndex,centerphotoIndex,rightphotoIndex]
-    while(leftphotoIndex==photosArray[i] || centerphotoIndex==photosArray[i] ||rightphotoIndex==photosArray[i]){
+    
+    while (leftphotoIndex === rightphotoIndex || leftphotoIndex === centerphotoIndex || rightphotoIndex === centerphotoIndex || shownPhotosArray.includes(leftphotoIndex) || shownPhotosArray.includes(centerphotoIndex) || shownPhotosArray.includes(rightphotoIndex)) {
+   
+    
         leftphotoIndex = generateRandomIndex();
     centerphotoIndex = generateRandomIndex();
     rightphotoIndex = generateRandomIndex();
     } 
-    */
+  
     
 
     leftphoto.src = Products.allProducts[leftphotoIndex].source;
