@@ -6,8 +6,8 @@ let leftphoto = document.getElementById('leftphoto');
 let centerphoto = document.getElementById('centerphoto');
 let frightphoto = document.getElementById('rightphoto');
 
-
-let maxAttempts =25;
+/****************************************************************************************** */
+let maxAttempts = 25;
 
 let attemptCounter = 0;
 
@@ -16,19 +16,49 @@ let leftphotoIndex;
 let centerphotoIndex;
 let rightphotoIndex;
 
-let namesArray=[];
-let votesArray=[];
-let shownArray=[];
-
+let namesArray = [];
+let votesArray = [];
+let shownArray = [];
+/************************************************************************************************** */
 function Products(name, source) {
-    this.name = name;
-    this.source = source;
-    this.shown = 0;
-    this.votes = 0;
-    Products.allProducts.push(this);
-    namesArray.push(this.name);
+  this.name = name;
+  this.source = source;
+  this.shown = 0;
+  this.votes = 0;
+  Products.allProducts.push(this);
+  namesArray.push(this.name);
 }
 Products.allProducts = [];
+
+/****************************************************************************************************************** */
+
+
+function productsStorage() {
+
+  let arrayProducts = JSON.stringify(Products.allProducts);
+  localStorage.setItem('productsInfo', arrayProducts)
+
+  //console.log(arrayProducts);
+
+
+}
+function GetproductsStorage() {
+  let dataStorage = localStorage.getItem('productsInfo');
+
+  // console.log(dataStorage);
+  let productsData = JSON.parse(dataStorage);
+  console.log(productsData);
+
+  if (productsData !== null) {
+    Products.allProducts= productsData;
+  }
+  //Products.allProducts= productsData;
+
+
+}
+
+/******************************************************************************************** */
+
 
 new Products('bag', './img/bag.jpg');
 new Products('banana', './img/banana.jpg');
@@ -57,20 +87,20 @@ new Products('usb', './img/usb.gif');
 new Products('water-can', './img/water-can.jpg');
 new Products('wine-glass', './img/wine-glass.jpg');
 
-console.log(Products.allProducts);
-let shownPhotosArray=[];
+//console.log(Products.allProducts);
+let shownPhotosArray = [];
 
 function generateRandomIndex() {
 
-    return Math.floor(Math.random() * Products.allProducts.length);
+  return Math.floor(Math.random() * Products.allProducts.length);
 }
 //console.log(generateRandomIndex())
 function renderThreephotos() {
-    leftphotoIndex = generateRandomIndex();
-    centerphotoIndex = generateRandomIndex();
-    rightphotoIndex = generateRandomIndex();
+  leftphotoIndex = generateRandomIndex();
+  centerphotoIndex = generateRandomIndex();
+  rightphotoIndex = generateRandomIndex();
 
-    
+
   /*
     while (leftphotoIndex === centerphotoIndex || centerphotoIndex === rightphotoIndex || rightphotoIndex === leftphotoIndex) {
         
@@ -83,126 +113,136 @@ function renderThreephotos() {
 
     }
     */
-    while (leftphotoIndex === rightphotoIndex || leftphotoIndex === centerphotoIndex || rightphotoIndex === centerphotoIndex || shownPhotosArray.includes(leftphotoIndex) || shownPhotosArray.includes(centerphotoIndex) || shownPhotosArray.includes(rightphotoIndex)) {
-   
-    
-        leftphotoIndex = generateRandomIndex();
+  while (leftphotoIndex === rightphotoIndex || leftphotoIndex === centerphotoIndex || rightphotoIndex === centerphotoIndex || shownPhotosArray.includes(leftphotoIndex) || shownPhotosArray.includes(centerphotoIndex) || shownPhotosArray.includes(rightphotoIndex)) {
+
+
+    leftphotoIndex = generateRandomIndex();
     centerphotoIndex = generateRandomIndex();
     rightphotoIndex = generateRandomIndex();
-    } 
-  
-    shownPhotosArray=[leftphotoIndex,centerphotoIndex,rightphotoIndex];
+  }
 
-    leftphoto.src = Products.allProducts[leftphotoIndex].source;
-    Products.allProducts[leftphotoIndex].shown++;
-    centerphoto.src = Products.allProducts[centerphotoIndex].source;
-    Products.allProducts[centerphotoIndex].shown++;
-    rightphoto.src = Products.allProducts[rightphotoIndex].source;
-    Products.allProducts[rightphotoIndex].shown++;
+  shownPhotosArray = [leftphotoIndex, centerphotoIndex, rightphotoIndex];
 
-   
+  leftphoto.src = Products.allProducts[leftphotoIndex].source;
+  Products.allProducts[leftphotoIndex].shown++;
+  centerphoto.src = Products.allProducts[centerphotoIndex].source;
+  Products.allProducts[centerphotoIndex].shown++;
+  rightphoto.src = Products.allProducts[rightphotoIndex].source;
+  Products.allProducts[rightphotoIndex].shown++;
+
+
 }
 renderThreephotos();
 
 
 
-photosElement.addEventListener('click',userClick);
+photosElement.addEventListener('click', userClick);
+
 
 function userClick(e) {
-    attemptCounter++;
-    if (attemptCounter <= maxAttempts) {
-        if (e.target.id === 'leftphoto') {
-            Products.allProducts[leftphotoIndex].votes++;
-        } else if (e.target.id === 'centerphoto') {
+  attemptCounter++;
+  if (attemptCounter <= maxAttempts) {
+    if (e.target.id === 'leftphoto') {
+      Products.allProducts[leftphotoIndex].votes++;
+    } else if (e.target.id === 'centerphoto') {
 
-            Products.allProducts[centerphotoIndex].votes++;
-        }
-        else if (e.target.id === 'rightphoto') { Products.allProducts[rightphotoIndex].votes++; }
+      Products.allProducts[centerphotoIndex].votes++;
+    }
+    else if (e.target.id === 'rightphoto') { Products.allProducts[rightphotoIndex].votes++; }
 
-        else { attemptCounter--; }
+    else { attemptCounter--; }
 
-        renderThreephotos();
+    renderThreephotos();
+
+  }
+
+  else {
+    photosElement.removeEventListener('click', userClick);
+
+    let button = document.getElementById('button');
+    button.addEventListener('click', Button);
+
+    for (let i = 0; i < Products.allProducts.length; i++) {
+      votesArray.push(Products.allProducts[i].votes);
+      shownArray.push(Products.allProducts[i].shown);
 
     }
 
-    else {
-        photosElement.removeEventListener('click',userClick);
 
-       let  button=document.getElementById('button');
-        button.addEventListener('click',Button);
 
-        for (let i = 0; i < Products.allProducts.length; i++) {
-            votesArray.push(Products.allProducts[i].votes);
-            shownArray.push(Products.allProducts[i].shown);
-            
-          }
-          
-      
-          
-          
 
-      function Button(click){
-          let list=document.getElementById('list');
-          let productsresult;
-          chart();
-        for (let i = 0; i < Products.allProducts.length; i++) {
-            let  productsresult = document.createElement('li');
-              list.appendChild(productsresult);
-  
-              productsresult.textContent = `${Products.allProducts[i].name} has ${Products.allProducts[i].votes} votes and was shown ${Products.allProducts[i].shown} times`;
-              button.removeEventListener('click', Button);
-          }
-         
-  
+    function Button(click) {
+      let list = document.getElementById('list');
+      let productsresult;
 
+      chart();
+      for (let i = 0; i < Products.allProducts.length; i++) {
+        let productsresult = document.createElement('li');
+        list.appendChild(productsresult);
+
+
+
+        productsresult.textContent = `${Products.allProducts[i].name} has ${Products.allProducts[i].votes} votes and was shown ${Products.allProducts[i].shown} times`;
+
+
+        button.removeEventListener('click', Button);
+        productsStorage();
       }
 
 
-        
 
     }
 
-    
+
+
+
+  }
+
+
 
 }
 
 
 function chart() {
-    let ctx = document.getElementById('myChart').getContext('2d');
-    
-    let chart= new Chart(ctx,{
-      
-     type: 'bar',
-  
-   
-     data:{
-     
-        labels: namesArray,
-        
-        datasets: [
-          {
+  let ctx = document.getElementById('myChart').getContext('2d');
+
+  let chart = new Chart(ctx, {
+
+    type: 'bar',
+
+
+    data: {
+
+      labels: namesArray,
+
+      datasets: [
+        {
           label: 'product votes',
           data: votesArray,
           backgroundColor: [
             'rgb(251, 93, 76)',
           ],
-    
+
           borderWidth: 1
         },
-  
+
         {
           label: 'products shown',
           data: shownArray,
           backgroundColor: [
             'black',
           ],
-    
+
           borderWidth: 1
         }
-        
+
       ]
-      },
-      options: {}
-    });
-    
-  }
+    },
+    options: {}
+  });
+
+}
+
+
+GetproductsStorage();
+
