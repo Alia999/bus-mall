@@ -71,8 +71,9 @@ function renderThreephotos() {
     rightphotoIndex = generateRandomIndex();
 
     
+  /*
     while (leftphotoIndex === centerphotoIndex || centerphotoIndex === rightphotoIndex || rightphotoIndex === leftphotoIndex) {
-        /*  leftphotoIndex = generateRandomIndex();*/
+        
 
         centerphotoIndex = generateRandomIndex();
 
@@ -81,7 +82,7 @@ function renderThreephotos() {
 
 
     }
-    
+    */
     while (leftphotoIndex === rightphotoIndex || leftphotoIndex === centerphotoIndex || rightphotoIndex === centerphotoIndex || shownPhotosArray.includes(leftphotoIndex) || shownPhotosArray.includes(centerphotoIndex) || shownPhotosArray.includes(rightphotoIndex)) {
    
     
@@ -90,7 +91,7 @@ function renderThreephotos() {
     rightphotoIndex = generateRandomIndex();
     } 
   
-    
+    shownPhotosArray=[leftphotoIndex,centerphotoIndex,rightphotoIndex];
 
     leftphoto.src = Products.allProducts[leftphotoIndex].source;
     Products.allProducts[leftphotoIndex].shown++;
@@ -138,12 +139,12 @@ function userClick(e) {
           
       
           
-          chart();
+          
 
       function Button(click){
           let list=document.getElementById('list');
           let productsresult;
-          
+          chart();
         for (let i = 0; i < Products.allProducts.length; i++) {
             let  productsresult = document.createElement('li');
               list.appendChild(productsresult);
